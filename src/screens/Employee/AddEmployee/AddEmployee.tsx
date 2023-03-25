@@ -50,7 +50,7 @@ export default function AddEmployee(props: any) {
     console.log(employeeData);
     if (edit) {
       axios
-        .patch("http://localhost:8080/updateEmployee", employeeData)
+        .patch("http://localhost:9000/updateEmployee", employeeData)
         .then(function (response) {
           console.log(response);
           console.log("sucessfully Updated");
@@ -81,7 +81,7 @@ export default function AddEmployee(props: any) {
         });
     } else {
       axios
-        .post("http://localhost:8080/addEmployee", employeeData)
+        .post("http://localhost:9000/addEmployee", employeeData)
         .then(function (response) {
           console.log(response);
           console.log("sucessfully added");
