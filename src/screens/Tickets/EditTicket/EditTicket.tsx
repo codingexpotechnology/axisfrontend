@@ -91,7 +91,7 @@ export default function EditTicket(props: any) {
     e.preventDefault();
     console.log(data);
     axios
-      .patch("http://localhost:8080/admin/updateTicket", data)
+      .patch("http://localhost:9000/admin/updateTicket", data)
       .then(function (response) {
         toast.success("Successfully Updated!", {
           position: "top-right",

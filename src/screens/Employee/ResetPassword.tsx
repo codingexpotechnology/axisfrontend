@@ -26,7 +26,7 @@ export default function ResetPassword(props: SimpleDialogProps) {
   const handeSubmitButton = (e: any) => {
     e.preventDefault();
     axios
-      .patch("http://localhost:8080/updatePassword", {
+      .patch("http://localhost:9000/updatePassword", {
         id: props.selectedEmployee.id,
         password: newPassword,
       })
@@ -65,12 +65,12 @@ export default function ResetPassword(props: SimpleDialogProps) {
     <Dialog
       onClose={handleClose}
       open={open}
-      // style={{
-      //   // color: "black",
-      //   paddingTop: "0.3rem",
-      //   paddingLeft: "2rem",
-      //   textAlign: "left",
-      // }}
+    // style={{
+    //   // color: "black",
+    //   paddingTop: "0.3rem",
+    //   paddingLeft: "2rem",
+    //   textAlign: "left",
+    // }}
     >
       <DialogTitle>
         {props?.selectedEmployee?.name}
@@ -110,7 +110,7 @@ export default function ResetPassword(props: SimpleDialogProps) {
         direction="row"
         alignItems="center"
         justifyContent="center"
-        // style={{ minHeight: "100vh" }}
+      // style={{ minHeight: "100vh" }}
       >
         <Button
           variant="outlined"
