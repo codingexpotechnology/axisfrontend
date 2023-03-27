@@ -41,7 +41,7 @@ export default function SimpleDialog(props: SimpleDialogProps) {
   const handeSubmitButton = (e: any) => {
     e.preventDefault();
     axios
-      .patch("http://localhost:9000/admin/updateTicket", ticketData)
+      .patch("http://localhost:8080/admin/updateTicket", ticketData)
       .then(function (response) {
         toast.success("Successfully Updated!", {
           position: "top-right",

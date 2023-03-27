@@ -60,7 +60,7 @@ export default function AddressComponent(props: any) {
 
   const getCircles = async () => {
     const response = await axios
-      .get(`http://localhost:9000/getAllCircles`)
+      .get(`http://localhost:8080/getAllCircles`)
       .then((response: any) => {
         return response.data;
       })
@@ -73,7 +73,7 @@ export default function AddressComponent(props: any) {
 
   const getDivisions = async () => {
     const response = await axios
-      .get(`http://localhost:9000/getAllDivisions`)
+      .get(`http://localhost:8080/getAllDivisions`)
       .then((response: any) => {
         return response.data;
       })
@@ -94,7 +94,7 @@ export default function AddressComponent(props: any) {
     if (event.target.name === "circle") {
       const response = await axios
         .get(
-          `http://localhost:9000/getAllDivisionByCircle/${event.target.value}`
+          `http://localhost:8080/getAllDivisionByCircle/${event.target.value}`
         )
         .then((response: any) => {
           return response.data;
