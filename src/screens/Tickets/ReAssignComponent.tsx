@@ -41,7 +41,7 @@ export default function SimpleDialog(props: SimpleDialogProps) {
   const handeSubmitButton = (e: any) => {
     e.preventDefault();
     axios
-      .patch("http://localhost:8080/admin/updateTicket", ticketData)
+      .patch("http://localhost:9000/admin/updateTicket", ticketData)
       .then(function (response) {
         toast.success("Successfully Updated!", {
           position: "top-right",
@@ -140,7 +140,7 @@ export default function SimpleDialog(props: SimpleDialogProps) {
         variant="outlined"
         style={{
           color: "white",
-          backgroundColor: "#808080",
+          backgroundColor: "#900080",
           marginBottom: 20,
           marginRight: "7.5rem",
           marginLeft: "7.5rem",

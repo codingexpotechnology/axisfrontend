@@ -52,8 +52,8 @@ export default function Tickets() {
   const isAdmin = localStorage.getItem("role") === "Admin";
   const loggedInUserPhone = localStorage.getItem("phone");
   const [rows, setRows] = useState([]);
-  const [tabValue, setTabValue] = useState("Open");
-  const [open, setOpen] = useState(false);
+  const [tabValue, setTabValue] = useState("OPEN");
+  const [OPEN, setOPEN] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState();
   const [engineersList, setengineersList] = useState([]);
 
@@ -64,17 +64,17 @@ export default function Tickets() {
 
   const getTickets = async () => {
     let response;
-    if (tabValue === "Open") {
+    if (tabValue === "OPEN") {
       if (isAdmin) {
-        response = await getAdminTicketByStatus("Open");
+        response = await getAdminTicketByStatus("OPEN");
       } else {
-        response = await getEngTicketByStatus(loggedInUserPhone, "Open");
+        response = await getEngTicketByStatus(loggedInUserPhone, "OPEN");
       }
-    } else if (tabValue === "Closed") {
+    } else if (tabValue === "CLOSED") {
       if (isAdmin) {
-        response = await getAdminTicketByStatus("Closed");
+        response = await getAdminTicketByStatus("CLOSED");
       } else {
-        response = await getEngTicketByStatus(loggedInUserPhone, "Closed");
+        response = await getEngTicketByStatus(loggedInUserPhone, "CLOSED");
       }
     }
 
@@ -238,7 +238,7 @@ export default function Tickets() {
     );
     if (confirmBox === true) {
       axios
-        .delete(`http://localhost:8080/deleteTicket/${serialNo}`)
+        .delete(`http://localhost:9000/deleteTicket/${serialNo}`)
         .then(function (response) {
           toast.success("Successfully Deleted!", {
             position: "top-right",
@@ -258,7 +258,7 @@ export default function Tickets() {
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     console.log(newValue);
     setTabValue(newValue);
-    if (newValue === "Open") {
+    if (newValue === "OPEN") {
       // setRows(rawRows);
     } else {
       setRows([]);
@@ -266,14 +266,14 @@ export default function Tickets() {
   };
 
   const handleReAssign = async (row: any) => {
-    setOpen(true);
+    setOPEN(true);
     const response = await getEngineersByStatus("Active");
     setengineersList(response);
     setSelectedTicket(row);
   };
 
   const handleClose = (value: string) => {
-    setOpen(false);
+    setOPEN(false);
   };
 
   return (
@@ -329,8 +329,8 @@ export default function Tickets() {
             TabIndicatorProps={{ style: { background: "#e03a3c" } }}
             aria-label="secondary tabs example"
           >
-            <Tab value="Open" label="Open" />
-            <Tab value="Closed" label="Closed" />
+            <Tab value="OPEN" label="OPEN" />
+            <Tab value="CLOSED" label="CLOSED" />
           </Tabs>
         </Grid>
       </Grid>
@@ -353,7 +353,7 @@ export default function Tickets() {
       <Grid lg={12} sm={12} xs={12} item container spacing={2}>
         <Grid item lg={12} sm={12} xs={12}>
           <ReAssignComponent
-            open={open}
+            open={OPEN}
             onClose={handleClose}
             engineersList={engineersList}
             selectedTicket={selectedTicket}
