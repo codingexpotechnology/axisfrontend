@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getAdminTicketByStatus = async (status: any) => {
   const response = await axios
-    .get(`http://localhost:9000/getTickets/admin/${status}`)
+    .get(`http://165.227.128.110:9000/getTickets/admin/${status}`)
     .then((response: any) => {
       return response.data;
     })
@@ -14,7 +14,7 @@ export const getAdminTicketByStatus = async (status: any) => {
 
 export const getEngTicketByStatus = async (phone: any, status: any) => {
   const response = await axios
-    .get(`http://localhost:9000/getTickets/${phone}/${status}`)
+    .get(`http://165.227.128.110:9000/getTickets/${phone}/${status}`)
     .then((response: any) => {
       return response.data;
     })

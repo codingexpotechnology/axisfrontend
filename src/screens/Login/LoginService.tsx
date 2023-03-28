@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const authenticated = async (employee: any) => {
   const response = axios
-    .post("http://localhost:9000/authenticated", employee)
+    .post("http://165.227.128.110:9000/authenticated", employee)
     .then(function (response) {
       return response.data;
     })

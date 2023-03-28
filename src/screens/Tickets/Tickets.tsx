@@ -238,7 +238,7 @@ export default function Tickets() {
     );
     if (confirmBox === true) {
       axios
-        .delete(`http://localhost:9000/deleteTicket/${serialNo}`)
+        .delete(`http://165.227.128.110:9000/deleteTicket/${serialNo}`)
         .then(function (response) {
           toast.success("Successfully Deleted!", {
             position: "top-right",

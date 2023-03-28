@@ -26,7 +26,7 @@ export default function ResetPassword(props: SimpleDialogProps) {
   const handeSubmitButton = (e: any) => {
     e.preventDefault();
     axios
-      .patch("http://localhost:9000/updatePassword", {
+      .patch("http://165.227.128.110:9000/updatePassword", {
         id: props.selectedEmployee.id,
         password: newPassword,
       })
