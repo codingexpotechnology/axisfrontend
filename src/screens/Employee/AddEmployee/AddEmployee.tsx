@@ -50,7 +50,7 @@ export default function AddEmployee(props: any) {
     console.log(employeeData);
     if (edit) {
       axios
-        .patch("http://165.227.128.110:9000/updateEmployee", employeeData)
+        .patch("https://165.227.128.110:9000/updateEmployee", employeeData)
         .then(function (response) {
           console.log(response);
           console.log("sucessfully Updated");
@@ -81,7 +81,7 @@ export default function AddEmployee(props: any) {
         });
     } else {
       axios
-        .post("http://165.227.128.110:9000/addEmployee", employeeData)
+        .post("https://165.227.128.110:9000/addEmployee", employeeData)
         .then(function (response) {
           console.log(response);
           console.log("sucessfully added");
