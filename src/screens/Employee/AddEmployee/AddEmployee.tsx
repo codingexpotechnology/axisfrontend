@@ -50,7 +50,7 @@ export default function AddEmployee(props: any) {
     console.log(employeeData);
     if (edit) {
       axios
-        .patch("https://165.227.128.110:9000/updateEmployee", employeeData)
+        .patch("https://backendapi.axisinfoline.com/updateEmployee", employeeData)
         .then(function (response) {
           console.log(response);
           console.log("sucessfully Updated");
@@ -81,7 +81,7 @@ export default function AddEmployee(props: any) {
         });
     } else {
       axios
-        .post("https://165.227.128.110:9000/addEmployee", employeeData)
+        .post("https://backendapi.axisinfoline.com/addEmployee", employeeData)
         .then(function (response) {
           console.log(response);
           console.log("sucessfully added");

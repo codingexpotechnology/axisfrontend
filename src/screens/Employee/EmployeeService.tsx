@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getEngineersByStatus = async (status: any) => {
   const response = await axios
-    .get(`https://165.227.128.110:9000/getAllEngineers/${status}`)
+    .get(`https://backendapi.axisinfoline.com/getAllEngineers/${status}`)
     .then((response: any) => {
       return response.data;
     })

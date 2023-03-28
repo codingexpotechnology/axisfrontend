@@ -155,7 +155,7 @@ export default function AddTicket(props: any) {
     e.preventDefault();
     if (handleValidation()) {
       axios
-        .post("https://165.227.128.110:9000/createTicket", ticketData)
+        .post("https://backendapi.axisinfoline.com/createTicket", ticketData)
         .then(function (response) {
           setComplaintNo(response.data);
           toast.success("Successfully Updated!", {
