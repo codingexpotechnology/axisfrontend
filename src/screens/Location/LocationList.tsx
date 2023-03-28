@@ -8,7 +8,7 @@ export default function LocationList() {
       const formData = new FormData();
       formData.append("fileUpload", e.target.files[0]);
       // axios.post({
-      //   url: "https://165.227.128.110:9000/importLocation",
+      //   url: "http://165.227.128.110:9000/importLocation",
       //   data: formData,
       //   headers: {
       //     "x-device-id": "stuff",
@@ -18,7 +18,7 @@ export default function LocationList() {
       // .then((response) => response.data);
 
       axios
-        .put("https://165.227.128.110:9000/importLocation", formData)
+        .put("http://165.227.128.110:9000/importLocation", formData)
         .then((response) => {
           console.log("response.data");
         })
