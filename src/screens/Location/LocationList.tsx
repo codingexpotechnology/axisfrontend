@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import axios from "axios";
 import React from "react";
+import { UrlConstants } from "../../global/UrlConstants";
 
 export default function LocationList() {
   const handleOnChange = (e: any) => {
@@ -8,7 +9,7 @@ export default function LocationList() {
       const formData = new FormData();
       formData.append("fileUpload", e.target.files[0]);
       // axios.post({
-      //   url: "https://backendapi.axisinfoline.com/importLocation",
+      //   url: `${UrlConstants.baseUrl}/importLocation`,
       //   data: formData,
       //   headers: {
       //     "x-device-id": "stuff",
@@ -18,7 +19,7 @@ export default function LocationList() {
       // .then((response) => response.data);
 
       axios
-        .put("https://backendapi.axisinfoline.com/importLocation", formData)
+        .put(`${UrlConstants.baseUrl}/importLocation`, formData)
         .then((response) => {
           console.log("response.data");
         })

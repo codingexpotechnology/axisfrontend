@@ -52,9 +52,19 @@ const CustomTable = (props: any) => {
     <div style={{ height: 500 }}>
       <ThemeProvider theme={tableTheme}>
         <MaterialReactTable
-          muiTableHeadCellProps={{
+          // renderTopToolbarCustomActions={() => <label>Customer's Table</label>}
+          muiTopToolbarProps={{
             sx: {
-              flex: "0 0 auto",
+              // backgroundColor: "#D3D3D3",
+            },
+          }}
+          enableHiding={false}
+          enableSorting={false}
+          enableColumnActions={false}
+          enableColumnFilters={false}
+          muiTableProps={{
+            sx: {
+              tableLayout: "fixed",
             },
           }}
           muiTableBodyCellProps={{
@@ -71,6 +81,15 @@ const CustomTable = (props: any) => {
           //passing the static object variant if no dynamic logic is needed
           muiSelectCheckboxProps={{
             color: "secondary", //makes all checkboxes use the secondary color
+          }}
+          muiTableHeadCellProps={{
+            sx: {
+              // backgroundColor: "#111111",
+              // color: "white",
+              // backgroundColor: "#FFFFE0",
+              fontWeight: "bold",
+              fontSize: "15px",
+            },
           }}
         />
       </ThemeProvider>

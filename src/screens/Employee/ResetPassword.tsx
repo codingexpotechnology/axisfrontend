@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { UrlConstants } from "../../global/UrlConstants";
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -19,14 +20,13 @@ export default function ResetPassword(props: SimpleDialogProps) {
   const [newPassword, setNewPassword] = useState();
 
   const handleInputChange = (event: any) => {
-    console.log(event.target.value);
     setNewPassword(event.target.value);
   };
 
   const handeSubmitButton = (e: any) => {
     e.preventDefault();
     axios
-      .patch("https://backendapi.axisinfoline.com/updatePassword", {
+      .patch(`${UrlConstants.baseUrl}/updatePassword`, {
         id: props.selectedEmployee.id,
         password: newPassword,
       })

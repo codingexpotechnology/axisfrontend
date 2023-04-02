@@ -1,14 +1,14 @@
 import axios from "axios";
+import { UrlConstants } from "../../global/UrlConstants";
 
 export const authenticated = async (employee: any) => {
   const response = axios
-    .post("https://backendapi.axisinfoline.com/authenticated", employee)
+    .post(`${UrlConstants.baseUrl}/authenticated`, employee)
     .then(function (response) {
       return response.data;
     })
     .catch(function (error) {
       console.log(error);
-      console.log("error came");
     });
   return response;
 };

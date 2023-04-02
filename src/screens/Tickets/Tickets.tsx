@@ -20,13 +20,17 @@ import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import ticketData from "../../data/ticketData.json";
 import { Tab, Tabs, TextField } from "@mui/material";
-import { getAdminTicketByStatus, getEngTicketByStatus } from "./TicketServices";
+import {
+  getAdminTicketByStatusAndDateRange,
+  getEngTicketByStatusAndDateRange,
+} from "./TicketServices";
 import CustomRangePicker from "../../global/CustomRangePicker/CustomRangePicker";
 import { getEngineersByStatus } from "../Employee/EmployeeService";
 import ReAssignComponent from "./ReAssignComponent";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { UrlConstants } from "../../global/UrlConstants";
 
 // const rawRows = [...ticketData];
 
@@ -59,64 +63,78 @@ export default function Tickets() {
 
   useEffect(() => {
     document.title = "Tickets";
-    getTickets();
+    getTickets("1900-01-01", "9999-01-01");
   }, [tabValue]);
 
-  const getTickets = async () => {
+  const getTickets = async (fromDate: String, toDate: String) => {
     let response;
     if (tabValue === "OPEN") {
       if (isAdmin) {
-        response = await getAdminTicketByStatus("OPEN");
+        response = await getAdminTicketByStatusAndDateRange(
+          "OPEN",
+          fromDate,
+          toDate
+        );
       } else {
-        response = await getEngTicketByStatus(loggedInUserPhone, "OPEN");
+        response = await getEngTicketByStatusAndDateRange(
+          loggedInUserPhone,
+          "OPEN",
+          fromDate,
+          toDate
+        );
       }
     } else if (tabValue === "CLOSED") {
       if (isAdmin) {
-        response = await getAdminTicketByStatus("CLOSED");
+        response = await getAdminTicketByStatusAndDateRange(
+          "CLOSED",
+          fromDate,
+          toDate
+        );
       } else {
-        response = await getEngTicketByStatus(loggedInUserPhone, "CLOSED");
+        response = await getEngTicketByStatusAndDateRange(
+          loggedInUserPhone,
+          "CLOSED",
+          fromDate,
+          toDate
+        );
       }
     }
-
-    console.log(response);
     setRows(response ?? []);
   };
 
   const columnsForEmployee = useMemo(
     () => [
-      { accessorKey: "serialNo", header: "S/no.", size: 50 },
-      { accessorKey: "complaintNo", header: "Complaint No", size: 50 },
+      { accessorKey: "serialNo", header: "S/no.", size: 80 },
+      { accessorKey: "complaintNo", header: "Complaint No", size: 120 },
       {
         accessorKey: "complaintDatetime",
         header: "Complaint Date & Time",
-        size: 50,
-        Cell: (cell: GridRenderCellParams) => (
-          <TextField
-            variant="standard"
-            disabled={true}
-            type="datetime-local"
-            style={{ width: 200 }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            name="complaintDatetime"
-            defaultValue={cell.row.original.complaintDatetime}
-            size="small"
-          />
-        ),
+        size: 200,
       },
       {
         accessorKey: "complainantName",
         header: "Complainant Name",
-        size: 50,
+        size: 180,
+      },
+      {
+        accessorKey: "complainantContactNo",
+        header: "Complainant Contact No",
+        size: 200,
       },
       {
         accessorKey: "View/Edit",
         header: "View/Edit",
-        size: 50,
+        size: 120,
+        muiTableHeadCellProps: {
+          align: "center",
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+        },
         Cell: (cell: GridRenderCellParams) => (
           <strong>
             <IconButton
+              size="small"
               style={{ marginLeft: 2, color: "#0000FF" }}
               tabIndex={cell.hasFocus ? 0 : -1}
               onClick={() => {
@@ -134,12 +152,29 @@ export default function Tickets() {
 
   const columnsForAdmin = useMemo(
     () => [
-      { accessorKey: "serialNo", header: "S/no.", size: 50 },
-      { accessorKey: "complaintNo", header: "Complaint No", size: 50 },
+      {
+        accessorKey: "serialNo",
+        header: "S/no.",
+        size: 80,
+      },
+      {
+        accessorKey: "complaintNo",
+        header: "Complaint No",
+        // minSize: 200,
+        // maxSize: 200,
+        size: 120,
+        muiTableHeadCellProps: {
+          align: "left",
+        },
+        muiTableBodyCellProps: {
+          align: "lect",
+        },
+      },
       {
         accessorKey: "complaintDatetime",
         header: "Complaint Date & Time",
-        size: 50,
+        size: 200,
+        enableSorting: false,
         Cell: (cell: GridRenderCellParams) => (
           <TextField
             variant="standard"
@@ -158,24 +193,31 @@ export default function Tickets() {
       {
         accessorKey: "complainantName",
         header: "Complainant Name",
-        size: 50,
+        size: 180,
       },
       {
         accessorKey: "engineerAssigned",
         header: "Engineer Assigned",
-        size: 50,
+        size: 180,
       },
       {
         accessorKey: "engineerContactNo",
-        header: "Eng. Contact Number",
-        size: 50,
+        header: "Engineer Contact Number",
+        size: 220,
       },
       {
         accessorKey: "Re-Assign",
         header: "Re-Assign",
-        size: 50,
+        size: 120,
+        muiTableHeadCellProps: {
+          align: "center",
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+        },
         Cell: (cell: GridRenderCellParams) => (
           <Chip
+            size="small"
             label="Re-assign"
             onClick={() => {
               handleReAssign(cell.row.original);
@@ -187,10 +229,17 @@ export default function Tickets() {
       {
         accessorKey: "View/Edit",
         header: "View/Edit",
-        size: 50,
+        size: 120,
+        muiTableHeadCellProps: {
+          align: "center",
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+        },
         Cell: (cell: GridRenderCellParams) => (
           <strong>
             <IconButton
+              size="small"
               style={{ marginLeft: 2, color: "#0000FF" }}
               tabIndex={cell.hasFocus ? 0 : -1}
               onClick={() => {
@@ -205,10 +254,17 @@ export default function Tickets() {
       {
         accessorKey: "Delete",
         header: "Delete",
-        width: 60,
+        width: 120,
+        muiTableHeadCellProps: {
+          align: "center",
+        },
+        muiTableBodyCellProps: {
+          align: "center",
+        },
         Cell: (params: GridRenderCellParams) => (
           <strong>
             <IconButton
+              size="small"
               style={{ marginLeft: 2 }}
               tabIndex={params.hasFocus ? 0 : -1}
               onClick={() => {
@@ -238,7 +294,7 @@ export default function Tickets() {
     );
     if (confirmBox === true) {
       axios
-        .delete(`https://backendapi.axisinfoline.com/deleteTicket/${serialNo}`)
+        .delete(`${UrlConstants.baseUrl}/deleteTicket/${serialNo}`)
         .then(function (response) {
           toast.success("Successfully Deleted!", {
             position: "top-right",
@@ -276,52 +332,33 @@ export default function Tickets() {
     setOPEN(false);
   };
 
+  const handleDateRangeChange = (date: any) => {
+    getTickets(date[0], date[1]);
+  };
+
   return (
     <>
       <Grid
-        xl={12}
         lg={12}
-        md={12}
         sm={12}
         xs={12}
         item
         container
-        style={{
-          padding: "0.5rem",
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "flex-end",
-          // backgroundColor: "#94cc33",
-        }}
+        spacing={2}
+        style={{ marginTop: 2 }}
       >
-        <Grid item xl={3} className={classes.firstGridItems}>
-          <CustomRangePicker />
-        </Grid>
-        {isAdmin && (
-          <>
-            <Grid item xl={1} className={classes.firstGridItems}>
-              <Button
-                className={classes.button}
-                variant="outlined"
-                startIcon={<FileUploadIcon />}
-              >
-                Import
-              </Button>
-            </Grid>
-            <Grid item xl={1} className={classes.firstGridItems}>
-              <Button
-                className={classes.button}
-                variant="outlined"
-                startIcon={<FileUploadIcon />}
-              >
-                Export
-              </Button>
-            </Grid>
-          </>
-        )}
-      </Grid>
-      <Grid lg={12} sm={12} xs={12} item container spacing={2}>
-        <Grid item lg={12} sm={12} xs={12} className={classes.secondGridItems}>
+        <Grid
+          item
+          lg={6}
+          sm={6}
+          xs={6}
+          className={classes.secondGridItems}
+          style={
+            {
+              // backgroundColor: "red",
+            }
+          }
+        >
           <Tabs
             value={tabValue}
             onChange={handleTabChange}
@@ -332,6 +369,61 @@ export default function Tickets() {
             <Tab value="OPEN" label="OPEN" />
             <Tab value="CLOSED" label="CLOSED" />
           </Tabs>
+        </Grid>
+        <Grid
+          xl={6}
+          lg={6}
+          md={6}
+          sm={6}
+          xs={6}
+          item
+          container
+          style={{
+            padding: "0.5rem",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+            // backgroundColor: "#94cc33",
+          }}
+        >
+          {isAdmin && (
+            <>
+              <Grid
+                // item
+                // xl={6}
+                // lg={6}
+                // sm={6}
+                // xs={6}
+                className={classes.firstGridItems}
+              >
+                <Grid
+                  item
+                  xl={3}
+                  className={classes.firstGridItems}
+                >
+                  <CustomRangePicker
+                    handleDateRangeChange={handleDateRangeChange}
+                  />
+                </Grid>
+                <Button
+                  className={classes.button}
+                  variant="outlined"
+                  startIcon={<FileUploadIcon />}
+                >
+                  Import
+                </Button>
+              </Grid>
+              <Grid item xl={1} className={classes.firstGridItems}>
+                <Button
+                  className={classes.button}
+                  variant="outlined"
+                  startIcon={<FileUploadIcon />}
+                >
+                  Export
+                </Button>
+              </Grid>
+            </>
+          )}
         </Grid>
       </Grid>
       <Grid

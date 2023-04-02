@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { UrlConstants } from "../../../global/UrlConstants";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -82,16 +83,13 @@ export default function EditTicket(props: any) {
   const [data, setData] = useState(props.history.location.state?.data);
 
   const handleChange = (event: any) => {
-    console.log(event.target.value);
-
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(data);
     axios
-      .patch("https://backendapi.axisinfoline.com/admin/updateTicket", data)
+      .patch(`${UrlConstants.baseUrl}/admin/updateTicket`, data)
       .then(function (response) {
         toast.success("Successfully Updated!", {
           position: "top-right",
@@ -272,6 +270,18 @@ export default function EditTicket(props: any) {
               <TextField
                 disabled={role === "Engineer"}
                 className={classes.textField}
+                label="Machine Serial No"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                name="uxb1jsi364g4453780"
+                value={data.uxb1jsi364g4453780}
+                onChange={handleChange}
+                size="small"
+              />
+              <TextField
+                disabled={role === "Engineer"}
+                className={classes.textField}
                 label="Village/Town or Substation"
                 InputLabelProps={{
                   shrink: true,
@@ -355,17 +365,6 @@ export default function EditTicket(props: any) {
                 }}
                 name="defectiveItemName"
                 value={data.defectiveItemName}
-                onChange={handleChange}
-                size="small"
-              />
-              <TextField
-                className={classes.textField}
-                label="UXB1JSI364G4453780"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                name="uxb1jsi364g4453780"
-                value={data.uxb1jsi364g4453780}
                 onChange={handleChange}
                 size="small"
               />

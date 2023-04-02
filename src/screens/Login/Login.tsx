@@ -12,6 +12,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { authenticated } from "./LoginService";
+import { toast, ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 
 function Copyright(props: any) {
   return (
@@ -36,6 +38,10 @@ const theme = createTheme();
 export default function SignInSide() {
   const history = useHistory();
 
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -44,14 +50,30 @@ export default function SignInSide() {
       password: data.get("password"),
     };
     authenticated(employee).then((response) => {
-      console.log(response);
       localStorage.setItem("role", response.role);
       localStorage.setItem("userName", response.name);
       localStorage.setItem("phone", response.phone);
       localStorage.setItem("id", response.id);
       if (response) {
-        history.push({
-          pathname: "/tickets",
+        if (response.role === "Surveyor") {
+          history.push({
+            pathname: "/survey",
+          });
+        } else {
+          history.push({
+            pathname: "/tickets",
+          });
+        }
+      } else {
+        toast.error("Incorrect Phone Number or Password!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
       }
     });
@@ -141,6 +163,7 @@ export default function SignInSide() {
           </Grid>
         </Grid>
       </ThemeProvider>
+      <ToastContainer />
     </div>
   );
 }

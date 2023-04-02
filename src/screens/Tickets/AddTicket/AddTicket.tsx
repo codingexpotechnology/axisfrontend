@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -16,6 +15,8 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { UrlConstants } from "../../../global/UrlConstants";
+import { useEffect, useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,7 +58,7 @@ const style = {
 export default function AddTicket(props: any) {
   const classes = useStyles();
   let history = useHistory();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const [ticketData, setTicketData] = useState({
     complainantName: "",
@@ -81,6 +82,10 @@ export default function AddTicket(props: any) {
     setOpen(false);
     history.goBack();
   };
+
+  useEffect(() => {
+    document.title = "Create Ticket";
+  }, []);
 
   const handleValidation = () => {
     if (!ticketData.complainantName) {
@@ -148,6 +153,19 @@ export default function AddTicket(props: any) {
       });
       return false;
     }
+    if (!ticketData.circle) {
+      toast.error("Please Select Project Name!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return false;
+    }
     return true;
   };
 
@@ -155,7 +173,7 @@ export default function AddTicket(props: any) {
     e.preventDefault();
     if (handleValidation()) {
       axios
-        .post("https://backendapi.axisinfoline.com/createTicket", ticketData)
+        .post(`${UrlConstants.baseUrl}/createTicket`, ticketData)
         .then(function (response) {
           setComplaintNo(response.data);
           toast.success("Successfully Updated!", {
@@ -348,11 +366,21 @@ export default function AddTicket(props: any) {
             >
               <option value="">Please Select</option>
               <option value="PVVNL">PVVNL</option>
-              <option value="DVVNL">DVVNL</option>
-              <option value="MVVNL">MVVNL</option>
-              <option value="PUVVNL">PUVVNL</option>
-              <option value="KESCO">KESCO</option>
-              <option value="DMRC">DMRC</option>
+              <option value="DVVNL" disabled>
+                DVVNL
+              </option>
+              <option value="MVVNL" disabled>
+                MVVNL
+              </option>
+              <option value="PUVVNL" disabled>
+                PUVVNL
+              </option>
+              <option value="KESCO" disabled>
+                KESCO
+              </option>
+              <option value="DMRC" disabled>
+                DMRC
+              </option>
             </select>
           </Grid>
           <Grid item xs>
@@ -404,7 +432,20 @@ export default function AddTicket(props: any) {
               ))}
             </select>
           </Grid>
-          <Grid item xs></Grid>
+          <Grid className={classes.input} item xs>
+            <Typography className={classes.Typography}>
+              Machine Serial No.
+            </Typography>
+            <Box>
+              <input
+                className={classes.input}
+                autoComplete="new-password"
+                name="uxb1jsi364g4453780"
+                type="tel"
+                onChange={handleInputChange}
+              />
+            </Box>
+          </Grid>
           <AddressComponent
             ticketData={ticketData}
             setTicketData={setTicketData}

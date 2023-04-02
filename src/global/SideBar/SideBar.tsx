@@ -24,10 +24,11 @@ import {
   Home,
 } from "@material-ui/icons";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import GroupIcon from "@mui/icons-material/Group";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
 
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
@@ -58,6 +59,11 @@ const listItems = [
   //   listText: "Locations",
   //   url: "/locations",
   // },
+  {
+    listIcon: <AnalyticsIcon />,
+    listText: "Survey",
+    url: "/survey",
+  },
   {
     listIcon: <GroupIcon />,
     listText: "Employees",
@@ -111,7 +117,8 @@ export default function SideBar() {
     localStorage.setItem("userName", "");
     localStorage.setItem("userPhoneNo", "");
     localStorage.setItem("id", "");
-    history.push("/");
+    window.location.replace("https://axisinfoline.com");
+    // history.push("s/");
   };
 
   return (
